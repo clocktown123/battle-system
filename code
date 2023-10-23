@@ -1,0 +1,134 @@
+#include<iostream> //library
+using namespace std;
+
+void BattleSystem(); //function decliration 
+int MonsterGen();
+
+int PlayerHealth = 100; //global variable!
+
+int main() { //sarting point of program
+	srand(time(NULL)); //randomizes seed based on computers clock
+
+	//game variables
+	int room = 1;
+	char input = 'a';
+	
+
+	//game loop
+	while (input != 'q' && PlayerHealth >= 0) { //game loop will quit if user types q or runs out of health
+		switch (room) {
+		case 1:
+			cout << "you are in room 1, you can go (s)outh" << endl;
+			cin >> input;
+			if (input == 's')
+				room = 2;
+			break;
+		case 2:
+			BattleSystem();
+			cout << "you are in room 2, you can go (n)orth" << endl;
+			cin >> input;
+			if (input == 'n')
+				room = 1;
+			break;
+		}
+
+	}// end game loop
+}//end main
+
+void BattleSystem() {
+	int MonsterType = MonsterGen();
+	int MonsterHealth = 0;
+	int MonsterDMG = 0;
+	int PlayerDMG = 0;
+
+	// set monsters health depending on the type 
+	if (MonsterType == 1) {//skeleton
+		MonsterHealth = 30;
+	}
+
+	if (MonsterType == 2) { //spider
+		MonsterHealth = 15;
+	}
+
+	if (MonsterType == 3) { //zombie
+		MonsterHealth = 25;
+	}
+
+	if (MonsterType == 4) { //golem
+		MonsterHealth = 35;
+	}
+
+	if (MonsterType == 5) { //ghost
+		MonsterHealth = 20;
+	}
+
+	//set the monster's damage depending on what type
+	if (MonsterType == 1) { //skeleton
+		MonsterDMG = rand() % 20 + 1;
+	}
+
+	if (MonsterType == 2) { //spider
+		MonsterDMG = rand() % 6 + 5;
+	}
+
+	if (MonsterType == 3) { //zombie
+		MonsterDMG = rand() % 15 + 1;
+	}
+
+	if (MonsterType == 4) { //golem
+		MonsterDMG = rand() % 16 + 5;
+	}
+
+	if (MonsterType == 5) { //ghost
+		MonsterDMG = rand() % 10 + 1;
+	}
+
+	while (MonsterHealth > 0 && PlayerHealth > 0) {
+		cout << "Monster bites you for " << MonsterDMG << "HP" << endl;
+		PlayerHealth -= MonsterDMG;
+		PlayerDMG = rand() % 76; //Your attack is between 0 and 75
+		cout << "You counter the monster for " << PlayerDMG << "HP" << endl << endl;
+		MonsterHealth -= PlayerDMG;
+		system("pause");
+		cout << "Your health is now" << PlayerHealth << ",and the monster's health is " << MonsterHealth << endl;
+		system("pause");
+
+	}
+	if (MonsterHealth <= 0)
+		cout << "You won!" << endl;
+	else
+		cout << "You died :(" << endl;
+}
+
+
+
+
+int MonsterGen() {
+	int num = rand() % 100; // creates a number from 0-99
+	if (num < 15) {//15% chance
+		cout << "a skeleton spawned!" << endl;
+		return 1;
+	}
+	else if (num < 20) {//5% chance
+		cout << "a spider crawls towards you." << endl;
+		cout << "it jumps at you." << endl;
+		return 2;
+	}
+
+	else if (num < 50) {//30%
+		cout << "a zombie stumbles forward." << endl;
+		cout << "it chomps towards you." << endl;
+		return 3;
+	}
+	else if (num < 75) {//25% chance
+		cout << "a golem rumbles towards you." << endl;
+		cout << "it slams the floor infront of you." << endl;
+		return 4;
+	}
+	else if (num < 100) {//25% chance
+		cout << "a ghost floats through your body." << endl;
+		cout << "it gives you the chills." << endl;
+		return 5;
+	}
+
+}
